@@ -1,0 +1,1 @@
+create a database application that will create and sell cookbooks for various ethnic styles of cooking.  list the ethnicities and also allow the user to select the level of spice. offer cooking classes where the chef is disabled and part of the profits go to charity.

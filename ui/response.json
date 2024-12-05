@@ -1,0 +1,171 @@
+{
+    "models": [
+        {
+            "classname": "Ethnicity",
+            "code": "class Ethnicity(Base):\n    \"\"\"description: Holds all ethnic styles of cooking\"\"\"\n    __tablename__ = 'ethnicity'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)",
+            "sqlite_create": "CREATE TABLE ethnicity (\nid INTEGER PRIMARY KEY AUTOINCREMENT,\nname TEXT NOT NULL\n)",
+            "description": "Holds all ethnic styles of cooking",
+            "name": "ethnicity"
+        },
+        {
+            "classname": "SpiceLevel",
+            "code": "class SpiceLevel(Base):\n    \"\"\"description: Specifies levels of spice for the recipes\"\"\"\n    __tablename__ = 'spice_level'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    level = Column(String, nullable=False)",
+            "sqlite_create": "CREATE TABLE spice_level (\nid INTEGER PRIMARY KEY AUTOINCREMENT,\nlevel TEXT NOT NULL\n)",
+            "description": "Specifies levels of spice for the recipes",
+            "name": "spice_level"
+        },
+        {
+            "classname": "Cookbook",
+            "code": "class Cookbook(Base):\n    \"\"\"description: Defines cookbooks, their titles, and associations with ethnic styles\"\"\"\n    __tablename__ = 'cookbook'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    title = Column(String, nullable=False)\n    ethnicity_id = Column(Integer, ForeignKey('ethnicity.id'))",
+            "sqlite_create": "CREATE TABLE cookbook (\nid INTEGER PRIMARY KEY AUTOINCREMENT,\ntitle TEXT NOT NULL,\nethnicity_id INTEGER,\nFOREIGN KEY (ethnicity_id) REFERENCES ethnicity (id)\n)",
+            "description": "Defines cookbooks, their titles, and associations with ethnic styles",
+            "name": "cookbook"
+        },
+        {
+            "classname": "Chef",
+            "code": "class Chef(Base):\n    \"\"\"description: Details of chefs who conduct cooking classes\"\"\"\n    __tablename__ = 'chef'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    is_disabled = Column(Boolean, nullable=False)",
+            "sqlite_create": "CREATE TABLE chef (\nid INTEGER PRIMARY KEY AUTOINCREMENT,\nname TEXT NOT NULL,\nis_disabled BOOLEAN NOT NULL\n)",
+            "description": "Details of chefs who conduct cooking classes",
+            "name": "chef"
+        },
+        {
+            "classname": "CookingClass",
+            "code": "class CookingClass(Base):\n    \"\"\"description: Information about cooking classes offered, linked to chefs\"\"\"\n    __tablename__ = 'cooking_class'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    class_date = Column(Date)\n    chef_id = Column(Integer, ForeignKey('chef.id'))\n    charity_percentage = Column(Integer, nullable=False)",
+            "sqlite_create": "CREATE TABLE cooking_class (\nid INTEGER PRIMARY KEY AUTOINCREMENT,\nclass_date DATETIME,\nchef_id INTEGER,\ncharity_percentage INTEGER NOT NULL,\nFOREIGN KEY (chef_id) REFERENCES chef (id)\n)",
+            "description": "Information about cooking classes offered, linked to chefs",
+            "name": "cooking_class"
+        },
+        {
+            "classname": "Recipe",
+            "code": "class Recipe(Base):\n    \"\"\"description: Contains recipes, linking them to specific cookbooks and spice levels\"\"\"\n    __tablename__ = 'recipe'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    cookbook_id = Column(Integer, ForeignKey('cookbook.id'))\n    spice_level_id = Column(Integer, ForeignKey('spice_level.id'))",
+            "sqlite_create": "CREATE TABLE recipe (\nid INTEGER PRIMARY KEY AUTOINCREMENT,\nname TEXT NOT NULL,\ncookbook_id INTEGER,\nspice_level_id INTEGER,\nFOREIGN KEY (cookbook_id) REFERENCES cookbook (id),\nFOREIGN KEY (spice_level_id) REFERENCES spice_level (id)\n)",
+            "description": "Contains recipes, linking them to specific cookbooks and spice levels",
+            "name": "recipe"
+        },
+        {
+            "classname": "Sale",
+            "code": "class Sale(Base):\n    \"\"\"description: Tracks sales of cookbooks and tickets to cooking classes\"\"\"\n    __tablename__ = 'sale'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    date_of_sale = Column(Date)\n    cookbook_id = Column(Integer, ForeignKey('cookbook.id'), nullable=True)\n    cooking_class_id = Column(Integer, ForeignKey('cooking_class.id'), nullable=True)\n    amount = Column(Integer, nullable=False)",
+            "sqlite_create": "CREATE TABLE sale (\nid INTEGER PRIMARY KEY AUTOINCREMENT,\ndate_of_sale DATE,\ncookbook_id INTEGER,\ncooking_class_id INTEGER,\namount INTEGER NOT NULL,\nFOREIGN KEY (cookbook_id) REFERENCES cookbook (id),\nFOREIGN KEY (cooking_class_id) REFERENCES cooking_class (id)\n)",
+            "description": "Tracks sales of cookbooks and tickets to cooking classes",
+            "name": "sale"
+        }
+    ],
+    "rules": [],
+    "test_data": "Test data for the System with Ethnicities, Spice Levels, Cookbooks, Chefs, Cooking Classes, Recipes, and Sales.",
+    "test_data_rows": [
+        {
+            "test_data_row_variable": "ethnicity1",
+            "code": "ethnicity1 = Ethnicity(id=1, name=\"Mexican\")"
+        },
+        {
+            "test_data_row_variable": "ethnicity2",
+            "code": "ethnicity2 = Ethnicity(id=2, name=\"Italian\")"
+        },
+        {
+            "test_data_row_variable": "ethnicity3",
+            "code": "ethnicity3 = Ethnicity(id=3, name=\"Chinese\")"
+        },
+        {
+            "test_data_row_variable": "ethnicity4",
+            "code": "ethnicity4 = Ethnicity(id=4, name=\"Indian\")"
+        },
+        {
+            "test_data_row_variable": "spice_level1",
+            "code": "spice_level1 = SpiceLevel(id=1, level=\"Mild\")"
+        },
+        {
+            "test_data_row_variable": "spice_level2",
+            "code": "spice_level2 = SpiceLevel(id=2, level=\"Medium\")"
+        },
+        {
+            "test_data_row_variable": "spice_level3",
+            "code": "spice_level3 = SpiceLevel(id=3, level=\"Hot\")"
+        },
+        {
+            "test_data_row_variable": "spice_level4",
+            "code": "spice_level4 = SpiceLevel(id=4, level=\"Extra Hot\")"
+        },
+        {
+            "test_data_row_variable": "cookbook1",
+            "code": "cookbook1 = Cookbook(id=1, title=\"Fiesta Flavors\", ethnicity_id=1)"
+        },
+        {
+            "test_data_row_variable": "cookbook2",
+            "code": "cookbook2 = Cookbook(id=2, title=\"Roman Recipes\", ethnicity_id=2)"
+        },
+        {
+            "test_data_row_variable": "cookbook3",
+            "code": "cookbook3 = Cookbook(id=3, title=\"Oriental Delights\", ethnicity_id=3)"
+        },
+        {
+            "test_data_row_variable": "cookbook4",
+            "code": "cookbook4 = Cookbook(id=4, title=\"Spicy Delicacies\", ethnicity_id=4)"
+        },
+        {
+            "test_data_row_variable": "chef1",
+            "code": "chef1 = Chef(id=1, name=\"Chef Ramon\", is_disabled=True)"
+        },
+        {
+            "test_data_row_variable": "chef2",
+            "code": "chef2 = Chef(id=2, name=\"Chef Maria\", is_disabled=False)"
+        },
+        {
+            "test_data_row_variable": "chef3",
+            "code": "chef3 = Chef(id=3, name=\"Chef Wei Ling\", is_disabled=True)"
+        },
+        {
+            "test_data_row_variable": "chef4",
+            "code": "chef4 = Chef(id=4, name=\"Chef Vijay\", is_disabled=False)"
+        },
+        {
+            "test_data_row_variable": "cooking_class1",
+            "code": "cooking_class1 = CookingClass(id=1, class_date=date(2023, 5, 22), chef_id=1, charity_percentage=10)"
+        },
+        {
+            "test_data_row_variable": "cooking_class2",
+            "code": "cooking_class2 = CookingClass(id=2, class_date=date(2023, 6, 18), chef_id=2, charity_percentage=15)"
+        },
+        {
+            "test_data_row_variable": "cooking_class3",
+            "code": "cooking_class3 = CookingClass(id=3, class_date=date(2023, 7, 25), chef_id=3, charity_percentage=20)"
+        },
+        {
+            "test_data_row_variable": "cooking_class4",
+            "code": "cooking_class4 = CookingClass(id=4, class_date=date(2023, 8, 19), chef_id=4, charity_percentage=12)"
+        },
+        {
+            "test_data_row_variable": "recipe1",
+            "code": "recipe1 = Recipe(id=1, name=\"Mild Enchiladas\", cookbook_id=1, spice_level_id=1)"
+        },
+        {
+            "test_data_row_variable": "recipe2",
+            "code": "recipe2 = Recipe(id=2, name=\"Spaghetti Bolognese\", cookbook_id=2, spice_level_id=2)"
+        },
+        {
+            "test_data_row_variable": "recipe3",
+            "code": "recipe3 = Recipe(id=3, name=\"Kung Pao Chicken\", cookbook_id=3, spice_level_id=3)"
+        },
+        {
+            "test_data_row_variable": "recipe4",
+            "code": "recipe4 = Recipe(id=4, name=\"Vindaloo Lamb\", cookbook_id=4, spice_level_id=4)"
+        },
+        {
+            "test_data_row_variable": "sale1",
+            "code": "sale1 = Sale(id=1, date_of_sale=date(2023, 5, 23), cookbook_id=1, cooking_class_id=None, amount=30)"
+        },
+        {
+            "test_data_row_variable": "sale2",
+            "code": "sale2 = Sale(id=2, date_of_sale=date(2023, 6, 19), cookbook_id=None, cooking_class_id=2, amount=45)"
+        },
+        {
+            "test_data_row_variable": "sale3",
+            "code": "sale3 = Sale(id=3, date_of_sale=date(2023, 7, 26), cookbook_id=3, cooking_class_id=None, amount=35)"
+        },
+        {
+            "test_data_row_variable": "sale4",
+            "code": "sale4 = Sale(id=4, date_of_sale=date(2023, 8, 20), cookbook_id=None, cooking_class_id=4, amount=50)"
+        }
+    ],
+    "test_data_sqlite": "INSERT INTO ethnicity (id, name) VALUES (1, 'Mexican'), (2, 'Italian'), (3, 'Chinese'), (4, 'Indian');\nINSERT INTO spice_level (id, level) VALUES (1, 'Mild'), (2, 'Medium'), (3, 'Hot'), (4, 'Extra Hot');\nINSERT INTO cookbook (id, title, ethnicity_id) VALUES (1, 'Fiesta Flavors', 1), (2, 'Roman Recipes', 2), (3, 'Oriental Delights', 3), (4, 'Spicy Delicacies', 4);\nINSERT INTO chef (id, name, is_disabled) VALUES (1, 'Chef Ramon', TRUE), (2, 'Chef Maria', FALSE), (3, 'Chef Wei Ling', TRUE), (4, 'Chef Vijay', FALSE);\nINSERT INTO cooking_class (id, class_date, chef_id, charity_percentage) VALUES (1, '2023-05-22', 1, 10), (2, '2023-06-18', 2, 15), (3, '2023-07-25', 3, 20), (4, '2023-08-19', 4, 12);\nINSERT INTO recipe (id, name, cookbook_id, spice_level_id) VALUES (1, 'Mild Enchiladas', 1, 1), (2, 'Spaghetti Bolognese', 2, 2), (3, 'Kung Pao Chicken', 3, 3), (4, 'Vindaloo Lamb', 4, 4);\nINSERT INTO sale (id, date_of_sale, cookbook_id, cooking_class_id, amount) VALUES (1, '2023-05-23', 1, NULL, 30), (2, '2023-06-19', NULL, 2, 45), (3, '2023-07-26', 3, NULL, 35), (4, '2023-08-20', NULL, 4, 50);",
+    "name": "CookbookCommerce"
+}

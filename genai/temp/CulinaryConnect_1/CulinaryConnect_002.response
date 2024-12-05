@@ -1,0 +1,148 @@
+{
+    "models": [
+        {
+            "classname": "Ethnicity",
+            "code": "class Ethnicity(Base):\\n    '''\\n    description: Table storing available ethnicities for cookbooks.\\n    '''\\n    __tablename__ = 'ethnicity'\\n\\n    id = Column(Integer, primary_key=True, autoincrement=True)\\n    name = Column(String, nullable=False)",
+            "sqlite_create": "CREATE TABLE ethnicity (\\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\\n    name TEXT NOT NULL\\n);",
+            "description": "Table storing available ethnicities for cookbooks.",
+            "name": "Ethnicity"
+        },
+        {
+            "classname": "SpiceLevel",
+            "code": "class SpiceLevel(Base):\\n    '''\\n    description: Table holding different spice levels for recipes.\\n    '''\\n    __tablename__ = 'spice_level'\\n\\n    id = Column(Integer, primary_key=True, autoincrement=True)\\n    level = Column(String, nullable=False)",
+            "sqlite_create": "CREATE TABLE spice_level (\\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\\n    level TEXT NOT NULL\\n);",
+            "description": "Table holding different spice levels for recipes.",
+            "name": "SpiceLevel"
+        },
+        {
+            "classname": "Charity",
+            "code": "class Charity(Base):\\n    '''\\n    description: Table listing charities that receive part of the cooking class profits.\\n    '''\\n    __tablename__ = 'charity'\\n\\n    id = Column(Integer, primary_key=True, autoincrement=True)\\n    name = Column(String, nullable=False)\\n    cause = Column(String)",
+            "sqlite_create": "CREATE TABLE charity (\\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\\n    name TEXT NOT NULL,\\n    cause TEXT\\n);",
+            "description": "Table listing charities that receive part of the cooking class profits.",
+            "name": "Charity"
+        },
+        {
+            "classname": "Chef",
+            "code": "class Chef(Base):\\n    '''\\n    description: Table with the details of chefs, some of whom may be disabled.\\n    '''\\n    __tablename__ = 'chef'\\n\\n    id = Column(Integer, primary_key=True, autoincrement=True)\\n    name = Column(String, nullable=False)\\n    is_disabled = Column(Boolean)",
+            "sqlite_create": "CREATE TABLE chef (\\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\\n    name TEXT NOT NULL,\\n    is_disabled BOOLEAN\\n);",
+            "description": "Table with the details of chefs, some of whom may be disabled.",
+            "name": "Chef"
+        },
+        {
+            "classname": "CookingClass",
+            "code": "class CookingClass(Base):\\n    '''\\n    description: Table holding details of cooking classes offered.\\n    '''\\n    __tablename__ = 'cooking_class'\\n\\n    id = Column(Integer, primary_key=True, autoincrement=True)\\n    title = Column(String, nullable=False)\\n    date = Column(Date, nullable=False)\\n    charity_id = Column(Integer, ForeignKey('charity.id'))\\n    chef_id = Column(Integer, ForeignKey('chef.id'))",
+            "sqlite_create": "CREATE TABLE cooking_class (\\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\\n    title TEXT NOT NULL,\\n    date DATE NOT NULL,\\n    charity_id INTEGER,\\n    chef_id INTEGER,\\n    FOREIGN KEY(charity_id) REFERENCES charity(id),\\n    FOREIGN KEY(chef_id) REFERENCES chef(id)\\n);",
+            "description": "Table holding details of cooking classes offered.",
+            "name": "CookingClass"
+        },
+        {
+            "classname": "Cookbook",
+            "code": "class Cookbook(Base):\\n    '''\\n    description: Table representing available cookbooks.\\n    '''\\n    __tablename__ = 'cookbook'\\n\\n    id = Column(Integer, primary_key=True, autoincrement=True)\\n    title = Column(String, nullable=False)\\n    price = Column(Integer, nullable=False)\\n    ethnicity_id = Column(Integer, ForeignKey('ethnicity.id'))\\n    spice_level_id = Column(Integer, ForeignKey('spice_level.id'))",
+            "sqlite_create": "CREATE TABLE cookbook (\\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\\n    title TEXT NOT NULL,\\n    price INTEGER NOT NULL,\\n    ethnicity_id INTEGER,\\n    spice_level_id INTEGER,\\n    FOREIGN KEY(ethnicity_id) REFERENCES ethnicity(id),\\n    FOREIGN KEY(spice_level_id) REFERENCES spice_level(id)\\n);",
+            "description": "Table representing available cookbooks.",
+            "name": "Cookbook"
+        }
+    ],
+    "rules": [],
+    "test_data": "Charity 1: name='FoodForAll', cause='Support culinary education for children'\\nCharity 2: name='ChefAid', cause='Professional development for disabled chefs'\\nCharity 3: name='FeedTheHungry', cause='Combating hunger worldwide'\\nCharity 4: name='CanCook', cause='Supporting disabled individuals'\\n\\nChef 1: name='John Doe', is_disabled=True\\nChef 2: name='Jane Smith', is_disabled=False\\nChef 3: name='Carlos Motta', is_disabled=True\\nChef 4: name='Ryu Tanaka', is_disabled=False\\n\\nCookingClass 1: title='Mexican Fiesta', date=date(2023, 5, 15), charity_id=1, chef_id=1\\nCookingClass 2: title='Mastering Spices', date=date(2023, 6, 20), charity_id=2, chef_id=2\\nCookingClass 3: title='Gourmet Delights', date=date(2023, 7, 10), charity_id=3, chef_id=3\\nCookingClass 4: title='Vegan Cooking', date=date(2023, 8, 25), charity_id=4, chef_id=4\\n\\nCookbook 1: title='Tacos and More', price=29, ethnicity_id=1, spice_level_id=2\\nCookbook 2: title='Indian Curries', price=35, ethnicity_id=2, spice_level_id=3\\nCookbook 3: title='Italian Classics', price=25, ethnicity_id=3, spice_level_id=1\\nCookbook 4: title='Spicy Wonders', price=40, ethnicity_id=4, spice_level_id=4\\n\\nEthnicity 1: name='Mexican'\\nEthnicity 2: name='Indian'\\nEthnicity 3: name='Italian'\\nEthnicity 4: name='Korean'\\n\\nSpiceLevel 1: level='Mild'\\nSpiceLevel 2: level='Medium'\\nSpiceLevel 3: level='Hot'\\nSpiceLevel 4: level='Extra Hot'",
+    "test_data_rows": [
+        {
+            "test_data_row_variable": "charity1",
+            "code": "charity1 = Charity(name='FoodForAll', cause='Support culinary education for children')"
+        },
+        {
+            "test_data_row_variable": "charity2",
+            "code": "charity2 = Charity(name='ChefAid', cause='Professional development for disabled chefs')"
+        },
+        {
+            "test_data_row_variable": "charity3",
+            "code": "charity3 = Charity(name='FeedTheHungry', cause='Combating hunger worldwide')"
+        },
+        {
+            "test_data_row_variable": "charity4",
+            "code": "charity4 = Charity(name='CanCook', cause='Supporting disabled individuals')"
+        },
+        {
+            "test_data_row_variable": "chef1",
+            "code": "chef1 = Chef(name='John Doe', is_disabled=True)"
+        },
+        {
+            "test_data_row_variable": "chef2",
+            "code": "chef2 = Chef(name='Jane Smith', is_disabled=False)"
+        },
+        {
+            "test_data_row_variable": "chef3",
+            "code": "chef3 = Chef(name='Carlos Motta', is_disabled=True)"
+        },
+        {
+            "test_data_row_variable": "chef4",
+            "code": "chef4 = Chef(name='Ryu Tanaka', is_disabled=False)"
+        },
+        {
+            "test_data_row_variable": "cooking_class1",
+            "code": "cooking_class1 = CookingClass(title='Mexican Fiesta', date=date(2023, 5, 15), charity_id=1, chef_id=1)"
+        },
+        {
+            "test_data_row_variable": "cooking_class2",
+            "code": "cooking_class2 = CookingClass(title='Mastering\\u200c Spices', date=date(2023, 6, 20), charity_id=2, chef_id=2)"
+        },
+        {
+            "test_data_row_variable": "cooking_class3",
+            "code": "cooking_class3 = CookingClass(title='Gourmet Delights', date=date(2023, 7, 10), charity_id=3, chef_id=3)"
+        },
+        {
+            "test_data_row_variable": "cooking_class4",
+            "code": "cooking_class4 = CookingClass(title='Vegan Cooking', date=date(2023, 8, 25), charity_id=4, chef_id=4)"
+        },
+        {
+            "test_data_row_variable": "cookbook1",
+            "code": "cookbook1 = Cookbook(title='Tacos and More', price=29, ethnicity_id=1, spice_level_id=2)"
+        },
+        {
+            "test_data_row_variable": "cookbook2",
+            "code": "cookbook2 = Cookbook(title='Indian Curries', price=35, ethnicity_id=2, spice_level_id=3)"
+        },
+        {
+            "test_data_row_variable": "cookbook3",
+            "code": "cookbook3 = Cookbook(title='Italian Classics', price=25, ethnicity_id=3, spice_level_id=1)"
+        },
+        {
+            "test_data_row_variable": "cookbook4",
+            "code": "cookbook4 = Cookbook(title='Spicy Wonders', price=40, ethnicity_id=4, spice_level_id=4)"
+        },
+        {
+            "test_data_row_variable": "ethnicity1",
+            "code": "ethnicity1 = Ethnicity(name='Mexican')"
+        },
+        {
+            "test_data_row_variable": "ethnicity2",
+            "code": "ethnicity2 = Ethnicity(name='Indian')"
+        },
+        {
+            "test_data_row_variable": "ethnicity3",
+            "code": "ethnicity3 = Ethnicity(name='Italian')"
+        },
+        {
+            "test_data_row_variable": "ethnicity4",
+            "code": "ethnicity4 = Ethnicity(name='Korean')"
+        },
+        {
+            "test_data_row_variable": "spice_level1",
+            "code": "spice_level1 = SpiceLevel(level='Mild')"
+        },
+        {
+            "test_data_row_variable": "spice_level2",
+            "code": "spice_level2 = SpiceLevel(level='Medium')"
+        },
+        {
+            "test_data_row_variable": "spice_level3",
+            "code": "spice_level3 = SpiceLevel(level='Hot')"
+        },
+        {
+            "test_data_row_variable": "spice_level4",
+            "code": "spice_level4 = SpiceLevel(level='Extra Hot')"
+        }
+    ],
+    "test_data_sqlite": "INSERT INTO charity (name, cause) VALUES ('FoodForAll', 'Support culinary education for children');\\nINSERT INTO charity (name, cause) VALUES ('ChefAid', 'Professional development for disabled chefs');\\nINSERT INTO charity (name, cause) VALUES ('FeedTheHungry', 'Combating hunger worldwide');\\nINSERT INTO charity (name, cause) VALUES ('CanCook', 'Supporting disabled individuals');\\n\\nINSERT INTO chef (name, is_disabled) VALUES ('John Doe', 1);\\nINSERT INTO chef (name, is_disabled) VALUES ('Jane Smith', 0);\\nINSERT INTO chef (name, is_disabled) VALUES ('Carlos Motta', 1);\\nINSERT INTO chef (name, is_disabled) VALUES ('Ryu Tanaka', 0);\\n\\nINSERT INTO cooking_class (title, date, charity_id, chef_id) VALUES ('Mexican Fiesta', '2023-05-15', 1, 1);\\nINSERT INTO cooking_class (title, date, charity_id, chef_id) VALUES ('Mastering Spices', '2023-06-20', 2, 2);\\nINSERT INTO cooking_class (title, date, charity_id, chef_id) VALUES ('Gourmet Delights', '2023-07-10', 3, 3);\\nINSERT INTO cooking_class (title, date, charity_id, chef_id) VALUES ('Vegan Cooking', '2023-08-25', 4, 4);\\n\\nINSERT INTO cookbook (title, price, ethnicity_id, spice_level_id) VALUES ('Tacos and More', 29, 1, 2);\\nINSERT INTO cookbook (title, price, ethnicity_id, spice_level_id) VALUES ('Indian Curries', 35, 2, 3);\\nINSERT INTO cookbook (title, price, ethnicity_id, spice_level_id) VALUES ('Italian Classics', 25, 3, 1);\\nINSERT INTO cookbook (title, price, ethnicity_id, spice_level_id) VALUES ('Spicy Wonders', 40, 4, 4);\\n\\nINSERT INTO ethnicity (name) VALUES ('Mexican');\\nINSERT INTO ethnicity (name) VALUES ('Indian');\\nINSERT INTO ethnicity (name) VALUES ('Italian');\\nINSERT INTO ethnicity (name) VALUES ('Korean');\\n\\nINSERT INTO spice_level (level) VALUES ('Mild');\\nINSERT INTO spice_level (level) VALUES ('Medium');\\nINSERT INTO spice_level (level) VALUES ('Hot');\\nINSERT INTO spice_level (level) VALUES ('Extra Hot');",
+    "name": "CulinaryConnect"
+}

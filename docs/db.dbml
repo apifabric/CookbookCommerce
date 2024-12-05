@@ -1,0 +1,69 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+Chef: Details of chefs who conduct cooking classes
+Cookbook: Defines cookbooks, their titles, and associations with ethnic styles
+Ethnicity: Holds all ethnic styles of cooking
+CookingClass: Information about cooking classes offered, linked to chefs
+Recipe: Contains recipes, linking them to specific cookbooks and spice levels
+SpiceLevel: Specifies levels of spice for the recipes
+Sale: Tracks sales of cookbooks and tickets to cooking classes
+'''
+}
+
+Table Chef {
+    id INTEGER [primary key]
+    name VARCHAR 
+    is_disabled BOOLEAN 
+    }
+
+Table Cookbook {
+    id INTEGER [primary key]
+    title VARCHAR 
+    ethnicity_id INTEGER 
+    }
+
+Table Ethnicity {
+    id INTEGER [primary key]
+    name VARCHAR 
+    }
+
+Table CookingClass {
+    id INTEGER [primary key]
+    class_date DATE 
+    chef_id INTEGER 
+    charity_percentage INTEGER 
+    }
+
+Table Recipe {
+    id INTEGER [primary key]
+    name VARCHAR 
+    cookbook_id INTEGER 
+    spice_level_id INTEGER 
+    }
+
+Table SpiceLevel {
+    id INTEGER [primary key]
+    level VARCHAR 
+    }
+
+Table Sale {
+    id INTEGER [primary key]
+    date_of_sale DATE 
+    cookbook_id INTEGER 
+    cooking_class_id INTEGER 
+    amount INTEGER 
+    }
+
+
+
+// Relationships
+    Ref: Cookbook.(ethnicity_id) < Ethnicity.(id)
+    Ref: CookingClass.(chef_id) < Chef.(id)
+    Ref: Recipe.(cookbook_id) < Cookbook.(id)
+    Ref: Recipe.(spice_level_id) < SpiceLevel.(id)
+    Ref: Sale.(cookbook_id) < Cookbook.(id)
+    Ref: Sale.(cooking_class_id) < CookingClass.(id)

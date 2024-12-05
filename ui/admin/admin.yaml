@@ -1,0 +1,206 @@
+about:
+  date: December 05, 2024 14:57:29
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 6
+  number_tables: 7
+info_toggle_checked: true
+resources:
+  Chef:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: id
+    - name: is_disabled
+      required: true
+      type: Boolean
+    description: Details of chefs who conduct cooking classes
+    info_list: Details of chefs who conduct cooking classes
+    tab_groups:
+    - direction: tomany
+      fks:
+      - chef_id
+      name: CookingClassList
+      resource: CookingClass
+    type: Chef
+    user_key: name
+  Cookbook:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: ethnicity_id
+    - name: title
+      required: true
+    description: Defines cookbooks, their titles, and associations with ethnic styles
+    info_list: Defines cookbooks, their titles, and associations with ethnic styles
+    tab_groups:
+    - direction: tomany
+      fks:
+      - cookbook_id
+      name: RecipeList
+      resource: Recipe
+    - direction: tomany
+      fks:
+      - cookbook_id
+      name: SaleList
+      resource: Sale
+    - direction: toone
+      fks:
+      - ethnicity_id
+      name: ethnicity
+      resource: Ethnicity
+    type: Cookbook
+    user_key: id
+  CookingClass:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: chef_id
+    - name: class_date
+      type: DATE
+    - name: charity_percentage
+      required: true
+    description: Information about cooking classes offered, linked to chefs
+    info_list: Information about cooking classes offered, linked to chefs
+    tab_groups:
+    - direction: tomany
+      fks:
+      - cooking_class_id
+      name: SaleList
+      resource: Sale
+    - direction: toone
+      fks:
+      - chef_id
+      name: chef
+      resource: Chef
+    type: CookingClass
+    user_key: id
+  Ethnicity:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: id
+    description: Holds all ethnic styles of cooking
+    info_list: Holds all ethnic styles of cooking
+    tab_groups:
+    - direction: tomany
+      fks:
+      - ethnicity_id
+      name: CookbookList
+      resource: Cookbook
+    type: Ethnicity
+    user_key: name
+  Recipe:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: cookbook_id
+    - name: spice_level_id
+    - name: id
+    description: Contains recipes, linking them to specific cookbooks and spice levels
+    info_list: Contains recipes, linking them to specific cookbooks and spice levels
+    tab_groups:
+    - direction: toone
+      fks:
+      - cookbook_id
+      name: cookbook
+      resource: Cookbook
+    - direction: toone
+      fks:
+      - spice_level_id
+      name: spice_level
+      resource: SpiceLevel
+    type: Recipe
+    user_key: name
+  Sale:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: cookbook_id
+    - name: cooking_class_id
+    - name: date_of_sale
+      type: DATE
+    - name: amount
+      required: true
+    description: Tracks sales of cookbooks and tickets to cooking classes
+    info_list: Tracks sales of cookbooks and tickets to cooking classes
+    tab_groups:
+    - direction: toone
+      fks:
+      - cookbook_id
+      name: cookbook
+      resource: Cookbook
+    - direction: toone
+      fks:
+      - cooking_class_id
+      name: cooking_class
+      resource: CookingClass
+    type: Sale
+    user_key: id
+  SpiceLevel:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: level
+      required: true
+    description: Specifies levels of spice for the recipes
+    info_list: Specifies levels of spice for the recipes
+    tab_groups:
+    - direction: tomany
+      fks:
+      - spice_level_id
+      name: RecipeList
+      resource: Recipe
+    type: SpiceLevel
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
